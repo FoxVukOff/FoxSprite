@@ -17,7 +17,7 @@ endif()
 set(CMAKE_CONFIGURATION_TYPES "${CMAKE_BUILD_TYPE}" CACHE INTERNAL "internal")
 
 # LibreSprite project
-project(libresprite C CXX)
+project(foxsprite C CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 20)

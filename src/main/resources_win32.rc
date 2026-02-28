@@ -22,9 +22,9 @@ BEGIN
             VALUE "Comments", "https://github.com/FoxSprite/FoxSprite"
             VALUE "FileDescription", "FoxSprite - Animated sprites editor & pixel art tool"
             VALUE "FileVersion", "1,0,0,0"
-            VALUE "InternalName", "libresprite"
+            VALUE "InternalName", "foxsprite"
             VALUE "LegalCopyright", "Copyright (C) 2001-2016 by David Capello, 2016-2026 FoxSprite contributors"
-            VALUE "OriginalFilename", "libresprite.exe"
+            VALUE "OriginalFilename", "foxsprite.exe"
             VALUE "ProductName", "FOXSPRITE"
             VALUE "ProductVersion", "1,1,0,0"
         END
