@@ -1,15 +1,25 @@
-name: Windows x86_64
+name: Windows x64
 
 on:
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+  workflow_dispatch:
 
 jobs:
   build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2019, windows-2022]
+        include:
+          - os: windows-2019
+            target_name: windows-10-x64
+          - os: windows-2022
+            target_name: windows-11-x64
 
-    runs-on: windows-latest
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: msys2/setup-msys2@v2
@@ -38,9 +48,10 @@ jobs:
           mingw-w64-x86_64-zlib
           mingw-w64-x86_64-libarchive
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: 'true'
+
     - shell: msys2 {0}
       run: |
         mkdir build
@@ -50,9 +61,10 @@ jobs:
         cd ..
         rm build/bin/gen.exe
         node package_win.js build/bin/libresprite.exe
+
     - name: Archive production artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: libresprite-development-windows-x86_64
+        name: foxsprite-development-${{ matrix.target_name }}
         path: |
           build/bin/*
