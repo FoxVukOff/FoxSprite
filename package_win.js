@@ -47,8 +47,10 @@ async function call(file, {args, grep, callback}) {
     });
 }
 
-function copyDependencies(exe, target) {
-    call('objdump', {
+async function copyDependencies(exe, target) {
+    const imports = [];
+
+    await call('objdump', {
         args:['-p', exe],
         grep:/DLL Name: (.*)|PE File Base Relocations/gi,
         callback: (_, dll) => {
@@ -56,14 +58,18 @@ function copyDependencies(exe, target) {
                 throw 0;
             if (!blacklist.includes(dll.toLowerCase())) {
                 blacklist.push(dll.toLowerCase());
-                addImport(dll, [...searchDir]);
+                imports.push(dll);
             }
         }
     });
 
-    function addImport(dll, searchQueue) {
+    for (const dll of imports) {
+        await addImport(dll, [...searchDir]);
+    }
+
+    async function addImport(dll, searchQueue) {
         if (!searchQueue || !searchQueue.length) {
-            if (dll.toLowerCase() != dll) addImport(dll.toLowerCase(), [...searchDir]);
+            if (dll.toLowerCase() != dll) await addImport(dll.toLowerCase(), [...searchDir]);
             else {
                 blacklist.push(dll);
                 console.log('could not find', dll);
@@ -71,13 +77,13 @@ function copyDependencies(exe, target) {
             return;
         }
         const src = path.join(searchQueue.pop(), dll);
-        fs.copyFile(src, path.join(target, dll), fs.constants.COPYFILE_FICLONE, (err) => {
-            if (err) addImport(dll, searchQueue);
-            else {
-                console.log('copied', src);
-                copyDependencies(src, target);
-            }
-        });
+        try {
+            await fs.promises.copyFile(src, path.join(target, dll), fs.constants.COPYFILE_FICLONE);
+            console.log('copied', src);
+            await copyDependencies(src, target);
+        } catch (err) {
+            await addImport(dll, searchQueue);
+        }
     }
 }
 
