@@ -45,6 +45,8 @@ void AboutCommand::onExecute(Context* context)
   subtitle->setI18N();
   Separator* authors_separator1 = new Separator("Authors:", HORIZONTAL | TOP);
   authors_separator1->setI18N();
+  Separator* creators_separator = new Separator("Creators:", HORIZONTAL | TOP);
+  creators_separator->setI18N();
   Separator* authors_separator2 = new Separator("", HORIZONTAL);
   authors_separator2->setI18N();
   Label *author1 = new LinkLabel("http://davidcapello.com/", "David Capello");
@@ -57,6 +59,8 @@ void AboutCommand::onExecute(Context* context)
   author2_desc->setI18N();
   Label *author3 = new LinkLabel(WEBSITE_CONTRIBUTORS, "Contributors");
   author3->setI18N();
+  Label *creator1 = new Label("FoxVuk");
+  creator1->setI18N();
   Box* bottom_box1 = new Box(HORIZONTAL);
   Box* bottom_box2 = new Box(HORIZONTAL);
   Box* bottom_box3 = new Box(HORIZONTAL);
@@ -73,6 +77,8 @@ void AboutCommand::onExecute(Context* context)
   grid->addChildInCell(author2, 1, 1, 0);
   grid->addChildInCell(author2_desc, 1, 1, 0);
   grid->addChildInCell(author3, 2, 1, 0);
+  grid->addChildInCell(creators_separator, 2, 1, 0);
+  grid->addChildInCell(creator1, 2, 1, 0);
   grid->addChildInCell(authors_separator2, 2, 1, 0);
   grid->addChildInCell(copyright, 2, 1, 0);
   grid->addChildInCell(website, 2, 1, 0);
